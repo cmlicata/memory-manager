@@ -1,3 +1,4 @@
+import javax.xml.bind.SchemaOutputResolver;
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 
@@ -57,36 +58,18 @@ public class MemManager {
      * @return handle position handle
      */
     public Handle insert( byte[] space, int size ) {
-        // update freeblock freeList tracking info.
         int position = freeList.findPosition( size + 2 );
-        if ( position != -1 ) // successfully put the record.
-        {
 
-            memPool.store( space, position );
-            freeList.updateList( size + 2 );
-        } else
-        // no best block fit the record, need to reallocate the memPool.
-        {
-
-            while ( position == -1 ) {
-                // reallocate the memPool and store the record again
-                memPool.reallocate();
-                totalAllocations++;
-                // new free block need to be put to freeblock freeList.
-                Node newFreeBlock =
-                        new Node( blockSize, totalAllocations * blockSize );
-                freeList.insert( newFreeBlock );
-
-                // update the freeList: block size and block position.
-                position = freeList.findPosition( size + 2 );
-
-            }
+        if ( position != -1 ) {
             memPool.store( space, position );
             freeList.updateList( size + 2 );
 
+            return new Handle( position );
+        } else {
+            System.out.println("ERROR: mempool at capacity, cannot insert!");
+
+            return null;
         }
-        // the handle needs to be returned with position
-        return new Handle( position );
     }
 
 
@@ -97,13 +80,14 @@ public class MemManager {
      * @param handle with position of the record that need to be removed
      */
     public void remove( Handle handle ) {
-
         int position = handle.getPosition();
 
         // get byte size from memPool array and convert to int
         int recordSize = memPool.read( position ) & 0xFFFF;
+
         // after remove record, the free block needs to be put back to freeList
         Node freeBlock = new Node( recordSize + 2, position );
+
         freeList.insert( freeBlock );
     }
 
@@ -119,7 +103,6 @@ public class MemManager {
      * @return copySize the actual size of the record that copies into the space
      */
     public int get( byte[] space, Handle handle, int size ) {
-
         int copySize;
         int memSize = memPool.read( handle.getPosition() ) & 0xFFFF;
 
@@ -128,7 +111,9 @@ public class MemManager {
         } else {
             copySize = memSize;
         }
+
         memPool.read( space, handle.getPosition() + 2, size );
+
         return copySize;
     }
 
@@ -141,23 +126,29 @@ public class MemManager {
      * @return string returned by handle
      */
     public String get( Handle handle ) {
-
         int size = memPool.read( handle.getPosition() );
         byte[] space = new byte[ size ];
+
         memPool.read( space, handle.getPosition() + 2, size );
+
         return byteToString( space, size );
     }
 
 
+    /*
+     * TODO: rename this function
+     */
     /**
      * print out the entire freeblock freeList.
      */
     public void dump() {
-
         System.out.println( freeList.toString() );
     }
 
 
+    /*
+     * TODO: move this to the serializer class
+     */
     /**
      * Convert byte array to string.
      *

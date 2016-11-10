@@ -56,7 +56,6 @@ public class MemoryPool {
      * @return data in pool array
      */
     public byte read( int position ) {
-
         // read the size of record from first two bytes
         byte size = (byte) ( pool[ position ] << 8 );
         size = (byte) ( size + pool[ position + 1 ] );
@@ -73,19 +72,6 @@ public class MemoryPool {
      * @param size     of the record
      */
     public void read( byte[] space, int position, int size ) {
-
         System.arraycopy( pool, position, space, 0, size );
     }
-
-
-    /**
-     * Extends the size of memory pool array by twice of the original array.
-     */
-    public void reallocate() {
-
-        int newLength = pool.length + numberOfRecords;
-        pool = copyOf( pool, newLength );
-        System.out.println( String.format( "Memory pool expanded to be %d bytes.", newLength ) );
-    }
-
 }
