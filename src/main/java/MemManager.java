@@ -6,7 +6,7 @@ import java.nio.ByteBuffer;
  *
  * Functions Needed:
  *
- * TODO: insert recordNum x-coord y-coord cityName
+ * TODO: put recordNum x-coord y-coord cityName
  * TODO: remove recordNum from MemoryPool and update the freeblock freeList.
  * TODO: print recordNum to stdout
  * TODO: print (all records from the freeList)
@@ -59,7 +59,7 @@ public class MemManager {
     public Handle insert( byte[] space, int size ) {
         // update freeblock freeList tracking info.
         int position = freeList.findPosition( size + 2 );
-        if ( position != -1 ) // successfully insert the record.
+        if ( position != -1 ) // successfully put the record.
         {
 
             memPool.store( space, position );
@@ -72,7 +72,7 @@ public class MemManager {
                 // reallocate the memPool and store the record again
                 memPool.reallocate();
                 totalAllocations++;
-                // new free block need to be insert to freeblock freeList.
+                // new free block need to be put to freeblock freeList.
                 Node newFreeBlock =
                         new Node( blockSize, totalAllocations * blockSize );
                 freeList.insert( newFreeBlock );
@@ -102,7 +102,7 @@ public class MemManager {
 
         // get byte size from memPool array and convert to int
         int recordSize = memPool.read( position ) & 0xFFFF;
-        // after remove record, the free block needs to be insert back to freeList
+        // after remove record, the free block needs to be put back to freeList
         Node freeBlock = new Node( recordSize + 2, position );
         freeList.insert( freeBlock );
     }

@@ -32,9 +32,6 @@ import java.lang.reflect.InvocationTargetException;
 
 /**
  * This is the main class.
- *
- * @author wenfeng ren (rwenfeng)
- * @version Sep 11, 2014
  */
 
 public class Memman {

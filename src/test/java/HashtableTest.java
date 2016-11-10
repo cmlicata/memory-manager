@@ -49,7 +49,7 @@ public class HashtableTest
     }
 
     /**
-     * test insert method.
+     * test put method.
      */
     public void testInsert() {
 

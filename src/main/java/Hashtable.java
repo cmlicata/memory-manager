@@ -100,7 +100,7 @@ public class Hashtable {
 
 
     /**
-     * insert the key and value into the hash table and return true if insertion
+     * put the key and value into the hash table and return true if insertion
      * is successful else false.
      *
      * @param key   String

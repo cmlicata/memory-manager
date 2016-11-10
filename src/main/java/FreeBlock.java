@@ -12,7 +12,7 @@ public class FreeBlock {
 
 
     /**
-     * Create a new FreeBlock object and initialize. insert the node with
+     * Create a new FreeBlock object and initialize. put the node with
      * position = 0, free block size = numberOfRecords.
      *
      * @param blockSize the initial numberOfRecords
@@ -33,7 +33,7 @@ public class FreeBlock {
 
 
     /**
-     * use best fit method to find where to insert the record.
+     * use best fit method to find where to put the record.
      *
      * @param recordSize the size of the record
      *
@@ -116,7 +116,7 @@ public class FreeBlock {
 
 
     /**
-     * insert a free block, which has position and size reference.
+     * put a free block, which has position and size reference.
      *
      * @param newNode to be inserted
      */

@@ -81,14 +81,14 @@ public class FreeBlockTest extends TestCase {
     // ----------------------------------------------------------
 
     /**
-     * test insert method.
+     * test put method.
      */
     public void testInsert() {
 
         freelist.append( append2 );
         freelist.append( append3 );
 
-        //insert condition
+        //put condition
         Node insert = new Node( 1, 43 );
         freelist.insert( insert );
         assertEquals( append2, insert.prev() );

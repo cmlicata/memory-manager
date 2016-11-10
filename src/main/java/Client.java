@@ -47,7 +47,7 @@ public class Client {
             // Split up the arguments into an array of strings using whitespace as the delimiter
             String[] commandLineArguments = command.split( "\\s+" );
 
-            if ( commandLineArguments[ 0 ].equals( "insert" ) ) {
+            if ( commandLineArguments[ 0 ].equals( "put" ) ) {
                 insertRecord(
                         new CoordInfo(
                                 stringToInt( commandLineArguments[ 1 ] ),
@@ -74,14 +74,14 @@ public class Client {
 
 
     /**
-     * insert new CoordinateInfo into coordinateTable and memory pool.
+     * put new CoordinateInfo into coordinateTable and memory pool.
      *
      * @param cityCoordInfo that needs to be inserted
      */
     public void insertRecord( CoordInfo cityCoordInfo ) {
-        // insert into memory pool and get the handle
+        // put into memory pool and get the handle
         Handle songHandle = cityCoordinateTable.getHandle( cityCoordInfo );
-        // insert into hash table
+        // put into hash table
         if ( songHandle != null ) {
             System.out.println( "|" + cityCoordInfo
                                 + "| duplicates a record already in the song database." );
@@ -149,8 +149,8 @@ public class Client {
             int totalSizeOfRecord = x.length + y.length + cityName.length + 1;
 
             if ( totalSizeOfRecord > 256 ) {
-                throw new IllegalArgumentException( "Total length of a record may not be more "
-                                                    + "than 256 bytes." );
+                throw new IllegalArgumentException( "Total length of a record may not be more than "
+                                                    + "256 bytes." );
             }
 
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
