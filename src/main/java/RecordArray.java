@@ -35,6 +35,24 @@ public class RecordArray {
         table[ hash ] = new Entry( key, new Handle( value ) );
     }
 
+    public Handle remove( int key ) {
+
+        Handle ret = null;
+        int hash = ( key % TABLE_SIZE );
+
+        while ( table[ hash ] != null && table[ hash ].getKey() != key ) {
+            hash = ( hash + 1 ) % TABLE_SIZE;
+        }
+
+        if ( table[ hash ] == null ) {
+            return null;
+        } else {
+            ret = table [ hash ].getValue();
+            table [ hash ] = null;
+            return ret;
+        }
+    }
+
     /**
      * inner class Entry store two data: key and value for hash table.
      */
