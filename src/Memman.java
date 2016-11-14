@@ -62,8 +62,8 @@ public class Memman {
         }
 
         // getHandle the arguments from the command line
-        numberOfRecords = Integer.parseInt( args[ 0 ] );
-        poolSize = Integer.parseInt( args[ 1 ] );
+        poolSize = Integer.parseInt( args[ 0 ] );
+        numberOfRecords = Integer.parseInt( args[ 1 ] );
         commandInputFile = args[ 2 ];
 
         // create memory manager object and initialize it with poolSize
