@@ -39,10 +39,10 @@ public class MemoryPool {
      *
      * @return data in memPool array
      */
-    public byte read( int position ) {
+    public int read( int position ) {
 
         // read the size of record from first byte
-        byte size = (byte) ( memPool[ position ] << 8 );
+        int size = memPool[ position ];
 
         return size;
     }

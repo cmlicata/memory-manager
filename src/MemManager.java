@@ -90,7 +90,7 @@ public class MemManager {
         int recordSize = memPool.read( position ) & 0xFFFF;
 
         // after remove record, the free block needs to be put back to freeList
-        Node freeBlock = new Node( recordSize + 1, position );
+        Node freeBlock = new Node( recordSize , position );
 
         freeList.insert( freeBlock );
     }
@@ -116,7 +116,7 @@ public class MemManager {
             copySize = memSize;
         }
 
-        memPool.getDataFromMemoryPool( space, handle.getPosition() + 1, size );
+        memPool.getDataFromMemoryPool( space, handle.getPosition(), size );
 
         return copySize;
     }

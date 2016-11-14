@@ -1,1 +1,2 @@
 printinsert 0 4240 7345 Albanyinsert 1 3455 13836 Albuquerqueinsert 2 3511 10150 Amarilloinsert 3 6113 14954 Anchorageinsert 4 3345 8423 Atlantaremove 4print 0print 1print 2print 3print 4print 5insert 5 2515 5740 Asuncion_Paraguayprint 5insert 6 4447 11750 Bakerremove 8
+print

@@ -104,8 +104,9 @@ public class RecordArray {
 
                 }
             }
-            stringBuilder.append( " ]" );
         }
+
+        stringBuilder.append( " ]" );
 
         System.out.println( stringBuilder.toString() );
     }
