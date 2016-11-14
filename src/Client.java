@@ -46,6 +46,8 @@ class Client {
 
             if ( commandLineArguments[ 0 ].equals( "insert" ) ) {
                 try {
+
+                    //TODO: Insert Record into record array.
                     insertRecord( stringToInt( commandLineArguments[ 1 ] ),
                             new CoordInfo(
                                     stringToInt( commandLineArguments[ 2 ] ),
@@ -62,7 +64,8 @@ class Client {
             } else if ( commandLineArguments[ 0 ].equals( "remove" ) ) {
 
                 try {
-
+                    // TODO: Remove the record whose handle is stored in position recnum
+                    // TODO: of the record array.
                     removeRecord( stringToInt( commandLineArguments[ 1 ] ) );
 
                 } catch ( IllegalArgumentException illegalArgumentException ) {
@@ -76,6 +79,8 @@ class Client {
                 // if there is another part of this command (e.g. print 1)
                 if ( commandLineArguments.length > 1 ) {
                     try {
+                        // TODO: Print out the record whose handle is stored in position recnum
+                        // TODO: of the record array.
                         int recordNumber = stringToInt( commandLineArguments[ 1 ] );
                         cityCoordinateTable.printRecord( recordNumber, manager );
 
@@ -85,8 +90,14 @@ class Client {
                     }
 
                 } else {
+                    //TODO:  Dump out a complete listing of the contents of the memory pool
 
+                    // 1) The listing of city records currently stored in the memory pool in
+                    // order of the record number.
                     cityCoordinateTable.printContentsOfRecordArray( manager );
+                    // 2) Listing of the free blocks in order of their occurrence in the
+                    // freeblock list.
+                    manager.printFreeBlockList();
                 }
             }
         }
@@ -94,7 +105,7 @@ class Client {
 
 
     /**
-     * put new CoordinateInfo into coordinateTable and memory pool.
+     * Put new CoordinateInfo into coordinateTable and memory pool.
      *
      * @param cityCoordInfo that needs to be inserted
      */
@@ -107,7 +118,8 @@ class Client {
         Handle coordInfoHandle = cityCoordinateTable.getHandle( recordNumber );
 
         if ( coordInfoHandle != null ) {
-            cityCoordinateTable.remove( recordNumber );
+            // First we must remove the record before inserting one under the same handle.
+            removeRecord( recordNumber );
         }
 
         byte[] cityInfoByteArray = Serializer.coordInfoToByte( cityCoordInfo );
@@ -116,7 +128,6 @@ class Client {
         cityCoordinateTable.put( recordNumber, newRecordHandle );
         System.out.println( cityCoordInfo + " has been added to the memory pool." );
     }
-
 
     /**
      * Remove record from cityCoordinateTable.

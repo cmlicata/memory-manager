@@ -336,7 +336,7 @@ public class FreeBlock {
      *
      * @return freeBlock list as formatted string.
      */
-    public String toString() {
+    public  String toString() {
 
         StringJoiner list = new StringJoiner( " --> ", "[ ", " ]" );
 
