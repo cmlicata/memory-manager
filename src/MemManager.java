@@ -1,3 +1,10 @@
+/*
+ * Copyright 2016 © Capital One Financial Corporation All Rights Reserved.
+ * This software contains valuable trade secrets and proprietary information of Capital One and is
+ * protected by law. It may not be copied or distributed in any form or medium, disclosed to third
+ * parties, reverse engineered or used in any manner without prior written authorization from Capital One.
+ */
+
 /**
  * The Memory Manager that deals with the byte array that needs to be inserted into memory memPool.
  * <p>
@@ -90,7 +97,7 @@ public class MemManager {
         int recordSize = memPool.read( position ) & 0xFFFF;
 
         // after remove record, the free block needs to be put back to freeList
-        Node freeBlock = new Node( recordSize + 1, position );
+        Node freeBlock = new Node( recordSize , position );
 
         freeList.insert( freeBlock );
     }
@@ -116,7 +123,7 @@ public class MemManager {
             copySize = memSize;
         }
 
-        memPool.getDataFromMemoryPool( space, handle.getPosition() + 1, size );
+        memPool.getDataFromMemoryPool( space, handle.getPosition(), size );
 
         return copySize;
     }

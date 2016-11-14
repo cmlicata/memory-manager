@@ -126,7 +126,7 @@ class Client {
 
         Handle newRecordHandle = manager.insert( cityInfoByteArray, cityInfoByteArray.length );
         cityCoordinateTable.put( recordNumber, newRecordHandle );
-        System.out.println( cityCoordInfo + " has been added to the memory pool." );
+        System.out.println( cityCoordInfo + "has been added to the memory pool." );
     }
 
     /**

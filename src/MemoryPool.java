@@ -1,3 +1,10 @@
+/*
+ * Copyright 2016 © Capital One Financial Corporation All Rights Reserved.
+ * This software contains valuable trade secrets and proprietary information of Capital One and is
+ * protected by law. It may not be copied or distributed in any form or medium, disclosed to third
+ * parties, reverse engineered or used in any manner without prior written authorization from Capital One.
+ */
+
 /**
  * The MemoryPool stores the record as bytes to memory memPool.
  */
@@ -39,10 +46,10 @@ public class MemoryPool {
      *
      * @return data in memPool array
      */
-    public byte read( int position ) {
+    public int read( int position ) {
 
         // read the size of record from first byte
-        byte size = (byte) ( memPool[ position ] << 8 );
+        int size = memPool[ position ];
 
         return size;
     }

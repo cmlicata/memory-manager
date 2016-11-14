@@ -38,7 +38,7 @@ public class FreeBlock {
 
         // Worst node is the one with the most free space which will always be used to service a
         // request first.
-        return !isEmpty() && recordSize > head.getBlockSize() ?  null : head;
+        return !isEmpty() && recordSize > head.getBlockSize() ? null : head;
 
     }
 
@@ -91,27 +91,34 @@ public class FreeBlock {
     public void remove( Node remove ) {
 
         // If attempting to remove head or tail of the list
-        if ( remove == head ) {
-            if ( head != null ) {
-                if ( head.next() == null ) {
-                    head = null;
-                } else {
-                    head = head.next();
-                }
+        if ( remove.equals( head ) ) {
+            if ( head.next() == tail && tail == null ) {
+                head.next(tail);
+                head = null;
+                return;
+            } else {
+                head = head.next();
+                return;
             }
-        } else if ( remove == tail ) {
-            if ( tail != null ) {
-                if ( tail.prev() != null && tail.prev() != head ) {
-                    tail = tail.prev();
-                } else {
-                    tail = null;
-                }
-            }
-        }
+        } else if ( remove.equals( tail ) ) {
+            if ( tail.prev() != null && tail.prev() != head ) {
+                tail.prev().next( null );
+                tail = tail.prev();
+                tail = null;
+                return;
 
-        // Otherwise remove the node normally
-        remove.prev().next( remove.next() );
-        remove.next().prev( remove.prev() );
+            } else {
+                tail.prev().next( null );
+                tail.prev(null);
+                tail = null;
+
+                return;
+            }
+        } else {
+            // Otherwise remove the node normally
+            remove.prev().next( remove.next() );
+            remove.next().prev( remove.prev() );
+        }
     }
 
 
@@ -130,7 +137,7 @@ public class FreeBlock {
 
         // If the attempt to insert the record fail due to insufficient memory issues return -1.
         if ( worst == null ) {
-           return  position;
+            return position;
         }
 
         if ( recordSize == worst.getBlockSize() ) {
@@ -138,18 +145,21 @@ public class FreeBlock {
             remove( worst );
 
         } else
-        // If not all the space of the worst block is needed, then the remaining space will make
-        // up a new free block and be returned to the free list.
-        if ( worst.getBlockSize() > recordSize ) {
+            // If not all the space of the worst block is needed, then the remaining space will make
+            // up a new free block and be returned to the free list.
+            // TODO: FIX ISSUE HERE
+            if ( worst.getBlockSize() > recordSize ) {
 
-            int remainingSpace = worst.getBlockSize() - recordSize;
-            int newPosition = worst.getPosition() + worst.getBlockSize();
+                // RECORD SIZE HERE IS THE NUMBER OF BYTES IT TAKES UP.
+                int remainingSpace = worst.getBlockSize() - recordSize;
+                int newPosition = worst.getPosition() + recordSize;
 
-            Node remainingSpaceNode = new Node( remainingSpace, newPosition );
+                Node remainingSpaceNode = new Node( remainingSpace, newPosition );
 
-            insert( remainingSpaceNode );
+                remove( worst );
+                insert( remainingSpaceNode );
 
-        }
+            }
 
         return position;
     }
@@ -164,6 +174,7 @@ public class FreeBlock {
     public void insert( Node newNode ) {
 
         Node temp = head;
+        boolean isInsertedAlready = false;
 
         if ( head == null ) {
             head = newNode;
@@ -181,23 +192,22 @@ public class FreeBlock {
 
             head.next( tail );
             tail.prev( head );
+            isInsertedAlready = true;
         }
 
-        if ( tail.getBlockSize() > newNode.getBlockSize() ) {
-            append( newNode );
-            return;
-        }
-
-        while ( temp.next() != null ) {
+        while ( temp.next() != null && !isInsertedAlready ) {
 
             if ( newNode.getBlockSize() >= temp.getBlockSize() ) {
                 break;
+            } else {
+                temp = temp.next();
             }
-            temp = temp.next();
         }
+
+
         // If the block sizes are the same the nodes should be order by position in memoryPool ASC.
         while ( temp.next() != null ) {
-            if ( temp.next().getBlockSize() == newNode.getBlockSize() ) {
+            if ( temp.getBlockSize() == newNode.getBlockSize() && !temp.equals( newNode ) ) {
                 if ( newNode.getPosition() < temp.getPosition() ) {
                     temp = temp.prev();
                     break;
@@ -208,15 +218,19 @@ public class FreeBlock {
                 // be inserted at the end
             }
         }
-
-        // insert new node after temp runner node in list
-        newNode.next( temp.next() );
-        temp.next( newNode );
-        newNode.prev( temp );
+        if ( !isInsertedAlready ) {
+            // insert new node after temp runner node in list
+            newNode.next( temp.next() );
+            temp.next( newNode );
+            newNode.prev( temp );
+        }
 
         // Call merge method for new node to see if this node should be merged with any others in
         // the list.
         merge( newNode );
+
+        // FOR DEBUGGING
+       // System.out.println(this.toString());
 
     }
 
@@ -238,7 +252,7 @@ public class FreeBlock {
         while ( runner.next() != null ) {
 
             // if the free node is not equal to the target for merge operation
-            if ( runner != freeNode ) {
+            if ( !runner.equals( freeNode ) ) {
 
                 // if the freeNode's position is to the right of target node and they are "touching"
                 if ( isRightNeighbor( runner, freeNode ) ) {
@@ -313,7 +327,9 @@ public class FreeBlock {
      */
     public boolean isRightNeighbor( Node runner, Node target ) {
 
-        return ( runner.getPosition() + runner.getBlockSize() ) == target.getPosition();
+        int differenceInPosition = runner.getPosition() - target.getBlockSize();
+
+        return target.getPosition() == differenceInPosition;
     }
 
     /**
@@ -326,7 +342,9 @@ public class FreeBlock {
      */
     public boolean isLeftNeighbor( Node runner, Node target ) {
 
-        return ( runner.getPosition() - runner.getBlockSize() ) == target.getPosition();
+        int differenceInPosition = runner.getPosition() + target.getBlockSize();
+
+        return differenceInPosition == target.getPosition();
     }
 
     /**
@@ -336,17 +354,17 @@ public class FreeBlock {
      *
      * @return freeBlock list as formatted string.
      */
-    public  String toString() {
+    public String toString() {
 
         StringJoiner list = new StringJoiner( " --> ", "[ ", " ]" );
 
         Node temp = head;
 
-        if ( !isEmpty() && tail != null ) {
+        if ( !isEmpty() ) {
 
-            if ( temp.next().equals( tail ) ) {
+            if ( tail == null) {
 
-                list.add( head.toString() ).add( tail.toString() );
+                list.add( head.toString() );
 
             } else {
 
