@@ -51,7 +51,6 @@ public class MemManager {
         this.blockSize = blockSize;
     }
 
-
     /**
      * Insert a record and return its position handle.
      *
