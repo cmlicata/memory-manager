@@ -6,7 +6,7 @@ public class Node {
     // The number of bytes that this record takes up
     private int blockSize = -1;
 
-    // Position within the FreeBlock list occupied by this Node
+    // Position within the Memory Pool occupied by this Node
     private int position = -1;
 
     private Node next = null;
@@ -53,7 +53,7 @@ public class Node {
     }
 
 
-    public void setNext( Node next ) {
+    public void next( Node next ) {
 
         this.next = next;
     }
@@ -65,7 +65,7 @@ public class Node {
     }
 
 
-    public void setPrev( Node prev ) {
+    public void prev( Node prev ) {
 
         this.prev = prev;
     }
@@ -73,10 +73,7 @@ public class Node {
 
     public String toString() {
 
-        String str = "";
-        str = "(" + position + "," + blockSize + ")";
-
-        return str;
+        return "(position: " + position + " :: blockSize: " + blockSize + ")";
     }
 
 }

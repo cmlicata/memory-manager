@@ -49,4 +49,10 @@ public class CoordInfo {
 
         this.name = name;
     }
+
+    @Override
+    public String toString() {
+
+        return String.format( "City Coordinate Info: %s [ X = %d :: Y = %d ]\n", name, x, y);
+    }
 }

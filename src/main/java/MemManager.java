@@ -1,18 +1,20 @@
-import javax.xml.bind.SchemaOutputResolver;
-import java.io.UnsupportedEncodingException;
-import java.nio.ByteBuffer;
-
 /**
  * The Memory Manager that deals with the byte array that needs to be inserted into memory memPool.
- *
+ * <p>
  * Functions Needed:
- *
+ * <p>
  * TODO: put recordNum x-coord y-coord cityName
  * TODO: remove recordNum from MemoryPool and update the freeblock freeList.
  * TODO: print recordNum to stdout
  * TODO: print (all records from the freeList)
  */
 public class MemManager {
+
+    public static final int X_COORD_START_OFFSET = 1;
+
+    public static final int Y_COORD_START_OFFSET = 5;
+
+    public static final int CITY_START_OFFSET = 9;
 
     /**
      * Memory memPool array
@@ -42,6 +44,7 @@ public class MemManager {
      * @param blockSize the size of the block
      */
     public MemManager( int blockSize ) {
+
         memPool = new MemoryPool( blockSize );
         freeList = new FreeBlock( blockSize );
 
@@ -52,21 +55,22 @@ public class MemManager {
     /**
      * Insert a record and return its position handle.
      *
-     * @param space contains the record to be inserted
-     * @param size  of the record
+     * @param data contains the record to be inserted
+     * @param size of the record
      *
      * @return handle position handle
      */
-    public Handle insert( byte[] space, int size ) {
-        int position = freeList.findPosition( size + 2 );
+    public Handle insert( byte[] data, int size ) {
+
+        int position = freeList.findPosition( size );
 
         if ( position != -1 ) {
-            memPool.store( space, position );
-            freeList.updateList( size + 2 );
+            memPool.store( data, position );
+            freeList.updateList( size );
 
             return new Handle( position );
         } else {
-            System.out.println("ERROR: mempool at capacity, cannot insert!");
+            System.out.println( "ERROR: Mempool is at capacity, cannot insert!" );
 
             return null;
         }
@@ -74,23 +78,23 @@ public class MemManager {
 
 
     /**
-     * Free a block at the position specified by theHandle. Merge adjacent free
+     * Free a block at the position specified by the Handle. Merge adjacent free
      * blocks.
      *
      * @param handle with position of the record that need to be removed
      */
     public void remove( Handle handle ) {
+
         int position = handle.getPosition();
 
-        // get byte size from memPool array and convert to int
+        // getHandle byte size from memPool array and convert to int
         int recordSize = memPool.read( position ) & 0xFFFF;
 
         // after remove record, the free block needs to be put back to freeList
-        Node freeBlock = new Node( recordSize + 2, position );
+        Node freeBlock = new Node( recordSize + 1, position );
 
         freeList.insert( freeBlock );
     }
-
 
     /**
      * Return the record with handle posHandle, up to size bytes, by copying it
@@ -103,6 +107,7 @@ public class MemManager {
      * @return copySize the actual size of the record that copies into the space
      */
     public int get( byte[] space, Handle handle, int size ) {
+
         int copySize;
         int memSize = memPool.read( handle.getPosition() ) & 0xFFFF;
 
@@ -112,7 +117,7 @@ public class MemManager {
             copySize = memSize;
         }
 
-        memPool.read( space, handle.getPosition() + 2, size );
+        memPool.getDataFromMemoryPool( space, handle.getPosition() + 1, size );
 
         return copySize;
     }
@@ -121,58 +126,50 @@ public class MemManager {
     /**
      * Get the String with handle.
      *
-     * @param handle to get the string
+     * @param handle to getHandle the string
      *
      * @return string returned by handle
      */
-    public String get( Handle handle ) {
+    public CoordInfo get( Handle handle ) {
+
         int size = memPool.read( handle.getPosition() );
-        byte[] space = new byte[ size ];
+        int dataStart = handle.getPosition();
 
-        memPool.read( space, handle.getPosition() + 2, size );
+        byte[] xCoordinate = new byte[ 4 ];
+        memPool.getDataFromMemoryPool(
+                xCoordinate,
+                dataStart + X_COORD_START_OFFSET,
+                xCoordinate.length
+        );
 
-        return byteToString( space, size );
+        byte[] yCoordinate = new byte[ 4 ];
+        memPool.getDataFromMemoryPool(
+                yCoordinate,
+                dataStart + Y_COORD_START_OFFSET,
+                yCoordinate.length
+        );
+
+        byte[] cityName = new byte[ size - CITY_START_OFFSET ];
+        memPool.getDataFromMemoryPool(
+                cityName,
+                dataStart + CITY_START_OFFSET,
+                cityName.length
+        );
+
+
+        return new CoordInfo( Serializer.byteArrayToLittleEndianInt( xCoordinate ),
+                Serializer.byteArrayToLittleEndianInt( yCoordinate ),
+                Serializer.byteToString( cityName ) );
     }
 
 
-    /*
-     * TODO: rename this function
-     */
+
     /**
      * print out the entire freeblock freeList.
      */
-    public void dump() {
+    public void printFreeBlockList() {
+
         System.out.println( freeList.toString() );
-    }
-
-
-    /*
-     * TODO: move this to the serializer class
-     */
-    /**
-     * Convert byte array to string.
-     *
-     * @param data to convert to string
-     * @param size the actual size that used
-     *
-     * @return str converted from data
-     */
-    public String byteToString( byte[] data, int size ) {
-
-        String str = null;
-
-        // load data to buffer
-        ByteBuffer buffer = ByteBuffer.wrap( data );
-
-        byte[] buf = new byte[ size ];
-        buffer.get( buf );
-        try {
-            str = new String( buf, "US-ASCII" );
-        } catch ( UnsupportedEncodingException e ) {
-            e.printStackTrace();
-        }
-
-        return str;
     }
 
 }

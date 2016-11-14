@@ -1,77 +1,62 @@
-import static java.util.Arrays.copyOf;
-
-
 /**
- * The MemoryPool stores the record as bytes to memory pool.
+ * The MemoryPool stores the record as bytes to memory memPool.
  */
 public class MemoryPool {
 
     /**
-     * Our pool of memory from which we must allocate space
+     * Our memPool of memory from which we must allocate space
      */
-    private byte[] pool;
+    private byte[] memPool;
 
     /**
-     * The numberOfRecords is used to reallocate.
-     */
-    private int numberOfRecords;
-
-
-    /**
-     * Create a new MemoryPool object and initial with numberOfRecords.
+     * Create a new MemoryPool object and initial with blocksize.
      *
-     * @param numberOfRecords of the pool array
+     * @param blocksize of the memPool array
      */
-    public MemoryPool( int numberOfRecords ) {
+    public MemoryPool( int blocksize ) {
 
-        this.numberOfRecords = numberOfRecords;
-        pool = new byte[ numberOfRecords ];
+        memPool = new byte[ blocksize ];
     }
 
 
     /**
-     * Stores data within the "memory pool" array at index "position".
+     * Stores data within the "memory memPool" array at index "position".
      *
-     * @param data     to be stored into pool array.
-     * @param position in which the data should be inserted.
+     * @param data                   to be stored into memPool array.
+     * @param startingInsertPosition in which the data should be inserted.
      */
-    public void store( byte[] data, int position ) {
+    public void store( byte[] data, int startingInsertPosition ) {
 
-        // store the length of record in first two bytes
-        pool[ position ] = (byte) ( data.length >> 8 );
-        pool[ position + 1 ] = (byte) ( data.length );
-
-        // copy the data into memory pool
-        for ( byte index : data ) {
-            pool[ position + 2 + index ] = data[ index ];
-        }
+        // copy the data into memory memPool starting with the size
+        System.arraycopy( data, 0, memPool, startingInsertPosition, data.length );
     }
 
 
     /**
-     * Get data in pool array with index "position".
+     * Get data in memPool array with index "position".
      *
      * @param position where the data is
      *
-     * @return data in pool array
+     * @return data in memPool array
      */
     public byte read( int position ) {
-        // read the size of record from first two bytes
-        byte size = (byte) ( pool[ position ] << 8 );
-        size = (byte) ( size + pool[ position + 1 ] );
+
+        // read the size of record from first byte
+        byte size = (byte) ( memPool[ position ] << 8 );
 
         return size;
     }
 
 
     /**
-     * Read from pool array to space array.
+     * Read from memPool array to space array.
      *
      * @param space    to which the record will be copied
      * @param position of the record
      * @param size     of the record
      */
-    public void read( byte[] space, int position, int size ) {
-        System.arraycopy( pool, position, space, 0, size );
+    public void getDataFromMemoryPool( byte[] space, int position, int size ) {
+
+        System.arraycopy( memPool, position, space, 0, size );
     }
 }

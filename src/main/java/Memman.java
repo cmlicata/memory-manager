@@ -37,22 +37,20 @@ import java.lang.reflect.InvocationTargetException;
 public class Memman {
 
     /**
-     * the initial table size for hash table.
+     * the initial recordHandles size for hash recordHandles.
      */
-    public static int poolSize;
+    public static int numberOfRecords;
 
     /**
      * the max number of records that will have to be stored in the memory pool.
      */
-    public static int numberOfRecords;
+    public static int poolSize;
 
     /**
      * the name of the file which contains the commands we need to to parser.
      */
     public static String commandInputFile;
 
-
-    // ----------------------------------------------------------
 
     /**
      * main method.
@@ -70,15 +68,15 @@ public class Memman {
                                 + "java Memman{initial-hash-size}" );
         }
 
-        // get the arguments from the command line
-        poolSize = Integer.parseInt( args[ 0 ] );
-        numberOfRecords = Integer.parseInt( args[ 1 ] );
+        // getHandle the arguments from the command line
+        numberOfRecords = Integer.parseInt( args[ 0 ] );
+        poolSize = Integer.parseInt( args[ 1 ] );
         commandInputFile = args[ 2 ];
 
-        // create memory manager object and initialize it with numberOfRecords
-        MemManager manager = new MemManager( numberOfRecords );
+        // create memory manager object and initialize it with poolSize
+        MemManager manager = new MemManager( poolSize );
 
-        Client client = new Client( manager, poolSize, commandInputFile );
+        Client.init( manager, numberOfRecords, commandInputFile );
 
     }
 

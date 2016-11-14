@@ -5,7 +5,7 @@ public class Hashtable {
      * Song name or Artist name.
      */
     /**
-     * the hash table size.
+     * the hash recordHandles size.
      */
     private int tableSize;
 
@@ -18,7 +18,7 @@ public class Hashtable {
     /**
      * Create a new Hashtable object.
      *
-     * @param tableSize the size of table
+     * @param tableSize the size of recordHandles
      */
     public Hashtable( int tableSize ) {
 
@@ -29,7 +29,7 @@ public class Hashtable {
 
 
     /**
-     * hash function to get hashcode.
+     * hash function to getHandle hashcode.
      *
      * @param str the string to hash
      *
@@ -100,7 +100,7 @@ public class Hashtable {
 
 
     /**
-     * put the key and value into the hash table and return true if insertion
+     * put the key and value into the hash recordHandles and return true if insertion
      * is successful else false.
      *
      * @param key   String
@@ -152,7 +152,7 @@ public class Hashtable {
 
 
     /**
-     * get the handle of the key.
+     * getHandle the handle of the key.
      *
      * @param key of the handle
      *
@@ -174,7 +174,7 @@ public class Hashtable {
     /**
      * search the duplicates while insertion.
      *
-     * @param key to search in the table
+     * @param key to search in the recordHandles
      *
      * @return true if found, otherwise false
      */
@@ -201,7 +201,7 @@ public class Hashtable {
 
 
     /**
-     * get the index of the key.
+     * getHandle the index of the key.
      *
      * @param key to find the index
      *
@@ -223,14 +223,14 @@ public class Hashtable {
 
 
     /**
-     * re-hash the hash table by extend the size * 2.
+     * re-hash the hash recordHandles by extend the size * 2.
      */
     public void rehash() {
 
         int oldSize = tableSize;
         tableSize = tableSize * 2;
         Entry[] newTable = new Entry[ tableSize ];
-        // traverse the old hash table
+        // traverse the old hash recordHandles
         for ( int i = 0; i < oldSize; i++ ) {
             if ( table[ i ] != null && !table[ i ].getTomb() ) {
                 int probeNum = 0;
@@ -251,11 +251,11 @@ public class Hashtable {
 
 
     /**
-     * print out the hash table content.
+     * print out the hash recordHandles content.
      *
      * @param mem the memory manager to
      *
-     * @return str the content of the hash table;
+     * @return str the content of the hash recordHandles;
      */
     public String print( MemManager mem ) {
 
@@ -277,7 +277,7 @@ public class Hashtable {
 
 
     /**
-     * get usedSize of hash table.
+     * getHandle usedSize of hash recordHandles.
      *
      * @return usedSize
      */
@@ -288,7 +288,7 @@ public class Hashtable {
 
 
     /**
-     * inner class Entry store two data: key and value for hash table.
+     * inner class Entry store two data: key and value for hash recordHandles.
      */
     private class Entry {
 
@@ -325,9 +325,9 @@ public class Hashtable {
 
 
         /**
-         * get key of the entry.
+         * getHandle key of the entry.
          *
-         * @return key to get
+         * @return key to getHandle
          */
         public long getKey() {
 

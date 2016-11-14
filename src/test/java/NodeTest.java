@@ -62,11 +62,11 @@ public class NodeTest extends TestCase {
         //test next
         assertEquals( null, node.next() );
         Node newNode = new Node( 1, 2 );
-        node.setNext( newNode );
+        node.next( newNode );
         assertEquals( newNode, node.next() );
         //test prev
         assertEquals( null, node.prev() );
-        node.setPrev( newNode );
+        node.prev( newNode );
         assertEquals( newNode, node.prev() );
     }
 
