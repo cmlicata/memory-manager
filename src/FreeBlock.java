@@ -97,12 +97,8 @@ public class FreeBlock {
                 head = null;
                 return;
             } else if ( head.next().equals( tail ) ) {
-                head.next( null );
-                head.prev( null );
                 head = null;
                 head = tail;
-                tail.next( null );
-                tail.prev( head );
                 tail = null;
                 return;
             }
