@@ -93,11 +93,17 @@ public class FreeBlock {
         // If attempting to remove head or tail of the list
         if ( remove.equals( head ) ) {
             if ( head.next() == tail && tail == null ) {
-                head.next(tail);
+                head.next( tail );
                 head = null;
                 return;
-            } else {
-                head = head.next();
+            } else if ( head.next().equals( tail ) ) {
+                head.next( null );
+                head.prev( null );
+                head = null;
+                head = tail;
+                tail.next( null );
+                tail.prev( head );
+                tail = null;
                 return;
             }
         } else if ( remove.equals( tail ) ) {
@@ -109,16 +115,16 @@ public class FreeBlock {
 
             } else {
                 tail.prev().next( null );
-                tail.prev(null);
+                tail.prev( null );
                 tail = null;
 
                 return;
             }
-        } else {
-            // Otherwise remove the node normally
-            remove.prev().next( remove.next() );
-            remove.next().prev( remove.prev() );
         }
+
+        remove.prev().next( remove.next() );
+        remove.next().prev( remove.prev() );
+
     }
 
 
@@ -147,7 +153,6 @@ public class FreeBlock {
         } else
             // If not all the space of the worst block is needed, then the remaining space will make
             // up a new free block and be returned to the free list.
-            // TODO: FIX ISSUE HERE
             if ( worst.getBlockSize() > recordSize ) {
 
                 // RECORD SIZE HERE IS THE NUMBER OF BYTES IT TAKES UP.
@@ -230,7 +235,7 @@ public class FreeBlock {
         merge( newNode );
 
         // FOR DEBUGGING
-       // System.out.println(this.toString());
+        // System.out.println(this.toString());
 
     }
 
@@ -274,11 +279,9 @@ public class FreeBlock {
                     insert( result );
                 }
 
-                if ( foundLeftNeighbor && foundRightNeighbor ) {
-                    break;
-                }
-
             }
+
+            runner = runner.next();
 
         }
 
@@ -362,7 +365,7 @@ public class FreeBlock {
 
         if ( !isEmpty() ) {
 
-            if ( tail == null) {
+            if ( tail == null ) {
 
                 list.add( head.toString() );
 

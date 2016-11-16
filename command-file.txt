@@ -1,0 +1,34 @@
+print
+insert 0 4240 7345 Albany
+insert 1 3455 13836 Albuquerque
+insert 2 3511 10150 Amarillo
+insert 3 6113 14954 Anchorage
+insert 4 2341 234 Ashburn
+insert 5 4566 1234 Fairfax
+insert 6 1111 3333 New_York
+insert 7 8888 99 St_Louis
+insert 8 1234 5555 Harrisburg
+insert 9 5555 1111 Falls_Church
+print
+insert 5 3345 8423 Atlanta
+print 5
+remove 3
+print 3
+insert 1 1111 2222 Long_Long_Long_Long_City_Name 
+print 1
+print 0
+print 1
+print 2
+print 3
+print 4
+print 5
+print 6
+print 7
+print 8
+print 9
+insert 5 2515 5740 Asuncion_Paraguay
+print 5
+insert 6 4447 11750 Baker
+remove 8
+remove 10
+print

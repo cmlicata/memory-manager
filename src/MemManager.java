@@ -66,6 +66,7 @@ public class MemManager {
         if ( position != -1 ) {
             memPool.store( data, position );
             freeList.updateList( size );
+            System.out.println(freeList.toString());
 
             return new Handle( position );
         } else {
@@ -88,6 +89,8 @@ public class MemManager {
 
         // getHandle byte size from memPool array and convert to int
         int recordSize = memPool.read( position ) & 0xFFFF;
+
+        memPool.store( new byte[recordSize], position );
 
         // after remove record, the free block needs to be put back to freeList
         Node freeBlock = new Node( recordSize , position );
