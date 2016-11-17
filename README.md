@@ -1,7 +1,26 @@
 # memory-manager
 ## Basic Memory Manager
-You will write a memory management package for storing variable-length records in a large memory space. Your “memory pool” will consist of a large array of bytes. You will use a doubly linked list to keep track of the free blocks in the memory pool. This list will be referred to as the “freeblock” list. The freeblock list should store the free blocks in descending order by size of the free block. If two or more blocks are of the same length, then they should appear in ascending order of their position in the memory pool. You will use the worst fit rule for selecting which free block to use for a memory request. That is, the first free block in the linked list (which is the largest block) will be used to service the request if possible. If not all space of this block is needed, then the remaining space will make up a new free block and be returned to the free list. Be sure to merge adjacent free blocks whenever a block is released. To do the merge, it will be necessary to search through the freeblock list, looking for blocks that are adjacent to either the beginning or the end of the block being returned. Do not merge the free blocks at the beginning and end of the memory pool. That is, the memory pool itself is not considered to be circular.
-The records that you will store will contain the xy-coordinates and name for a city. Aside from the memory manager’s memory pool and freeblock list, the other major data structure for your project will be the “record array,” an array that stores the “handles” to the data records that are currently stored in the memory pool. A handle is the value returned by the memory manager when a request is made to insert a new record into the memory pool. This handle is used to recover the record. (Note that the record array is something of an artificial construct that is being used to simplify testing the memory manager for this project. The idea is that the record array gives us an easy way to identify the records independent of their placement in the memory pool.)
+You will write a memory management package for storing variable-length records in a large memory space. 
+
+### MemoryPool
+Your *memory pool* will consist of a large array of bytes. You will use a doubly linked list to keep track of the free blocks in the memory pool. This list will be referred to as the *freeblock* list. 
+
+### Freeblock List
+The freeblock list should store the free blocks in descending order by size of the free block. If two or more blocks are of the same length, then they should appear in ascending order of their position in the memory pool. 
+
+You will use the worst fit rule for selecting which free block to use for a memory request. That is, the first free block in the linked list (which is the largest block) will be used to service the request if possible.
+
+If not all space of this block is needed, then the remaining space will make up a new free block and be returned to the free list. Be sure to merge adjacent free blocks whenever a block is released. 
+
+- To do the merge, it will be necessary to search through the freeblock list, looking for blocks that are adjacent to either the beginning or the end of the block being returned. Do not merge the free blocks at the beginning and end of the memory pool. That is, the memory pool itself is not considered to be circular.
+
+### Stored Data Specification
+The records that you will store will contain the xy-coordinates and name for a city. 
+
+### The Record Array
+Aside from the memory manager’s memory pool and freeblock list, the other major data structure for your project will be the *record array*, an array that stores the “handles” to the data records that are currently stored in the memory pool. A handle is the value returned by the memory manager when a request is made to insert a new record into the memory pool. This handle is used to recover the record. 
+- (Note that the record array is something of an artificial construct that is being used to simplify testing the memory manager for this project. The idea is that the record array gives us an easy way to identify the records independent of their placement in the memory pool.)
+
 Invocation and I/O Files: The program will be invoked from the command-line as:
 java memman <pool-size> <num-recs> <command-file>
 The name of the program is memman. Parameter <pool-size> is the size of the memory pool (in bytes) that is to be allocated. Parameter <num-recs> is the size of the record array that holds the handles to the records stored in the memory pool. Your program will read from text file <command-file> a series of commands, with one command per line. The program should terminate after reading the end of the file. No command line will require more than 80 characters. The formats for the commands are as follows. The commands are free-format in that any number of spaces may come before, between, or after the command name and its parameters. All coordinates will be signed values small enough to fit in an int variable.
