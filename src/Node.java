@@ -73,7 +73,7 @@ public class Node {
 
     public String toString() {
 
-        return "(position: " + position + " :: blockSize: " + blockSize + ")";
+        return "(handle: " + position + " :: endOfBlock: " + ( ( position + blockSize ) -1 )+ ")";
     }
 
 }

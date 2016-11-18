@@ -58,7 +58,7 @@ class Client {
 
                 } catch ( IllegalArgumentException illegalArgumentException ) {
 
-                    illegalArgumentException.printStackTrace();
+                    System.out.println("Invalid record number due to out of range record number!");
                 }
 
             } else if ( commandLineArguments[ 0 ].equals( "remove" ) ) {
@@ -70,7 +70,7 @@ class Client {
 
                 } catch ( IllegalArgumentException illegalArgumentException ) {
 
-                    illegalArgumentException.printStackTrace();
+                    System.out.println("Invalid record number due to out of range record number!");
                 }
 
 
@@ -86,7 +86,7 @@ class Client {
 
                     } catch ( IllegalArgumentException illegalArgumentException ) {
 
-                        illegalArgumentException.printStackTrace();
+                        System.out.println("Invalid record number due to out of range record number!");
                     }
 
                 } else {
@@ -125,8 +125,11 @@ class Client {
         byte[] cityInfoByteArray = Serializer.coordInfoToByte( cityCoordInfo );
 
         Handle newRecordHandle = manager.insert( cityInfoByteArray, cityInfoByteArray.length );
-        cityCoordinateTable.put( recordNumber, newRecordHandle );
-        System.out.println( cityCoordInfo + "has been added to the memory pool." );
+        if (newRecordHandle != null) {
+            cityCoordinateTable.put( recordNumber, newRecordHandle );
+            System.out.println( cityCoordInfo + "has been added to the memory pool." );
+        }
+
     }
 
     /**

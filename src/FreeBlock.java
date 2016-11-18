@@ -91,7 +91,7 @@ public class FreeBlock {
     public void remove( Node remove ) {
 
         // If attempting to remove head or tail of the list
-        if ( remove.equals( head ) ) {
+        if ( remove == head  ) {
             if ( head.next() == tail && tail == null ) {
                 head.next( tail );
                 head = null;
@@ -99,10 +99,15 @@ public class FreeBlock {
             } else if ( head.next().equals( tail ) ) {
                 head = null;
                 head = tail;
+                tail.prev( null );
                 tail = null;
                 return;
+            } else {
+                head = head.next();
+                head.prev(null);
+                return;
             }
-        } else if ( remove.equals( tail ) ) {
+        } else if ( remove == tail  ) {
             if ( tail.prev() != null && tail.prev() != head ) {
                 tail.prev().next( null );
                 tail = tail.prev();
@@ -220,10 +225,24 @@ public class FreeBlock {
             }
         }
         if ( !isInsertedAlready ) {
-            // insert new node after temp runner node in list
-            newNode.next( temp.next() );
-            temp.next( newNode );
-            newNode.prev( temp );
+            if ( temp == head && newNode.getBlockSize() > temp.getBlockSize() ) {
+                newNode.next( temp );
+                temp.prev( newNode );
+                head = newNode;
+                head.next(temp);
+            } else if( temp == tail && newNode.getBlockSize() > temp.getBlockSize() ) {
+                // insert new node after temp runner node in list
+                newNode.next( temp );
+                temp.prev( newNode );
+                tail = newNode;
+            } else {
+
+                newNode.next( temp );
+                newNode.next( temp.next() );
+                temp.next( newNode );
+                newNode.prev( temp );
+            }
+
         }
 
         // Call merge method for new node to see if this node should be merged with any others in
@@ -231,7 +250,7 @@ public class FreeBlock {
         merge( newNode );
 
         // FOR DEBUGGING
-        // System.out.println(this.toString());
+        //System.out.println( this.toString() );
 
     }
 
@@ -281,7 +300,7 @@ public class FreeBlock {
 
         }
 
-        System.out.println( "Freeblock List Nodes has been merged!" );
+        System.out.println( "Freeblock List Nodes have been merged!" );
 
     }
 
@@ -367,10 +386,11 @@ public class FreeBlock {
 
             } else {
 
-                while ( temp.next() != null ) {
+                while ( temp.next() != null  ) {
                     list.add( temp.toString() );
                     temp = temp.next();
                 }
+                list.add( tail.toString() );
             }
         }
         return list.toString();
