@@ -73,7 +73,8 @@ public class Node {
 
     public String toString() {
 
-        return "(handle: " + position + " :: endOfBlock: " + ( ( position + blockSize ) -1 )+ ")";
+        String node = "(handle: " + position + " :: endOfBlock: " + ( ( position + blockSize ) - 1 )+ ")";
+        return node + " " + blockSize + " bytes";
     }
 
 }

@@ -58,7 +58,8 @@ class Client {
 
                 } catch ( IllegalArgumentException illegalArgumentException ) {
 
-                    System.out.println("Invalid record number due to out of range record number!");
+                    System.out.println( "Invalid record number due to out of range record "
+                                        + "number!\n" );
                 }
 
             } else if ( commandLineArguments[ 0 ].equals( "remove" ) ) {
@@ -70,7 +71,8 @@ class Client {
 
                 } catch ( IllegalArgumentException illegalArgumentException ) {
 
-                    System.out.println("Invalid record number due to out of range record number!");
+                    System.out.println( "Invalid record number due to out of range record "
+                                        + "number!\n" );
                 }
 
 
@@ -86,7 +88,8 @@ class Client {
 
                     } catch ( IllegalArgumentException illegalArgumentException ) {
 
-                        System.out.println("Invalid record number due to out of range record number!");
+                        System.out.println( "Invalid record number due to out of range record "
+                                            + "number!\n" );
                     }
 
                 } else {
@@ -125,9 +128,10 @@ class Client {
         byte[] cityInfoByteArray = Serializer.coordInfoToByte( cityCoordInfo );
 
         Handle newRecordHandle = manager.insert( cityInfoByteArray, cityInfoByteArray.length );
-        if (newRecordHandle != null) {
+        if ( newRecordHandle != null ) {
             cityCoordinateTable.put( recordNumber, newRecordHandle );
-            System.out.println( cityCoordInfo + "has been added to the memory pool." );
+            System.out.println( "Record " + recordNumber + ": with "
+                                + cityCoordInfo + ( "has been added to the memory pool.\n" ) );
         }
 
     }
@@ -137,7 +141,7 @@ class Client {
      *
      * @param recordNumber number of record stored in cityCoordinateTable
      */
-    private void removeRecord( int recordNumber ) throws IllegalArgumentException{
+    private void removeRecord( int recordNumber ) throws IllegalArgumentException {
 
         if ( recordNumber > cityCoordinateTable.getRecordTableSize() - 1 ) {
             throw new IllegalArgumentException( "Invalid record number!" );
@@ -155,7 +159,7 @@ class Client {
             cityCoordinateTable.remove( recordNumber );
             manager.remove( coordInfoHandle );
             System.out.println(
-                    String.format( "Record %d has been removed from memory", recordNumber )
+                    String.format( "Record %d: removed from memory.\n", recordNumber )
             );
         }
     }

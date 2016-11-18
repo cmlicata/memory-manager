@@ -70,7 +70,7 @@ public class MemManager {
 
             return new Handle( position );
         } else {
-            System.out.println( "ERROR: Mempool is at capacity, cannot insert!" );
+            System.out.println( "ERROR: Mempool is at capacity, cannot insert! \n" );
 
             return null;
         }

@@ -53,6 +53,6 @@ public class CoordInfo {
     @Override
     public String toString() {
 
-        return String.format( "City Coordinate Info: %s [ X = %d :: Y = %d ]\n", name, x, y);
+        return String.format( " City Coordinate Info: %s [ X = %d :: Y = %d ] \n", name, x, y);
     }
 }

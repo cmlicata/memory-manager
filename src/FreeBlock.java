@@ -300,7 +300,7 @@ public class FreeBlock {
 
         }
 
-        System.out.println( "Freeblock List Nodes have been merged!" );
+        //System.out.println( "Freeblock List Nodes have been merged!" );
 
     }
 
@@ -393,7 +393,7 @@ public class FreeBlock {
                 list.add( tail.toString() );
             }
         }
-        return list.toString();
+        return list.toString() + "\n";
     }
 
 }

@@ -95,7 +95,7 @@ public class RecordArray {
                 if ( recordHandles[ i ] != null ) {
                     stringBuilder.append(
                             // print value of recnum, position handle, and record
-                            String.format( "Record # %d :: Position # %d :: %s",
+                            String.format( "Record %d: Position # %d :: %s",
                                     recordHandles[ i ].getKey(),
                                     recordHandles[ i ].getValue().getPosition(),
                                     mem.get( recordHandles[ i ].getValue() )
@@ -106,7 +106,7 @@ public class RecordArray {
             }
         }
 
-        stringBuilder.append( " ]" );
+        stringBuilder.append( "] \n" );
 
         System.out.println( stringBuilder.toString() );
     }
@@ -129,11 +129,13 @@ public class RecordArray {
 
         } else if ( getHandle( recordNumber ) == null ) {
 
-            System.out.println( "There is no record associated with that record number." );
+            System.out.println( "Record " + recordNumber + ": " + "There is no record associated with "
+                                + "that record number . \n" );
 
         } else {
 
-            System.out.println( mem.get( recordHandles[ recordNumber ].getValue() ).toString() );
+            System.out.println( "Record " + recordNumber + ": " + mem.get( recordHandles[
+                    recordNumber ].getValue() ).toString() + "\n");
         }
     }
 
